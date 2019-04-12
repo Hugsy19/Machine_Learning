@@ -5,7 +5,7 @@
 * [Logistic回归](machine_learning/1_1_logistic_regression)
 * [深度神经网络](machine_learning/1_2_nerual_network)
 * 优化神经网络
-  * [数据划分](nachine_learning/2_0_data_sets)
+  * [数据划分](machine_learning/2_0_data_sets)
   * [模型评估](machine_learning/2_1_model_estimate)
   * [梯度下降优化](machine_learning/2_2_gradient_descent_improving)
 * [卷积神经网络]()
