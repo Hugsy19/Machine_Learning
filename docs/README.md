@@ -13,8 +13,9 @@
 目前本笔记内容涉及到的课程主要有：
 1. 吴恩达-深度学习系列：[[Coursera](https://www.coursera.org/specializations/deep-learning)] [[网易云课堂](https://mooc.study.163.com/smartSpec/detail/1001319001.htm)]
 2. 吴恩达-机器学习：[[Coursera](https://www.coursera.org/learn/machine-learning/)] [[网易云课程](https://study.163.com/course/introduction/1004570029.htm)]
-3. 李宏毅-机器学习：[[2017（bilibili）](https://www.bilibili.com/video/av10590361)] [[2019（bilibili）](https://www.bilibili.com/video/av46561029)] [[课程主页（2019）](http://speech.ee.ntu.edu.tw/~tlkagk/courses_ML19.html)]
-4. 动手学深度学习：[[主页](http://zh.d2l.ai/index.html)]
+3. 李宏毅-机器学习：[[2017（bilibili）](https://www.bilibili.com/video/av10590361)] [[2019（bilibili）](https://www.bilibili.com/video/av46561029)] [[课程主页](http://speech.ee.ntu.edu.tw/~tlkagk/courses_ML19.html)]
+4. 斯坦福-CS231n：[[2017（网易云课堂）](https://study.163.com/course/introduction/1004697005.htm)] [[课程主页](http://cs231n.stanford.edu/)]
+5. 动手学深度学习：[[主页](http://zh.d2l.ai/index.html)]
 
 <h2>License</h2>
 

@@ -108,6 +108,7 @@ $$\begin{aligned} \mathcal{L}(\hat{y}, y) & =- y\log \hat{y} - (1-y)\log(1 - \ha
 #### 参考资料
 1. [吴恩达-神经网络与深度学习-网易云课堂](http://mooc.study.163.com/learn/deeplearning_ai-2001281002)
 2. [Andrew Ng-Neural Networks and Deep Learning-Coursera](https://www.coursera.org/learn/neural-networks-deep-learning/)
+3. [动手学深度学习](http://zh.d2l.ai/index.html)
 
 #### 更新历史
-* 2019.04.10 完成初稿
+* 2019.04.12 完成初稿

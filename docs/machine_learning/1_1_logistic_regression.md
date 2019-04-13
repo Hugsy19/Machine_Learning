@@ -23,7 +23,7 @@
 
 例如对训练好的肿瘤分类器输入肿瘤的大小$x$后，输出的$h_\theta(x) = 0.7$，就表示分类器预测这种大小的肿瘤有$70\%$的概率是恶性的。
 
-### 决策边界
+### 决策界限
 有了适用上面所述的假设函数$\hat{y}$，还需要设定一个阈值作为分类的标准，以将假设函输出的连续值进一步转化为离散的标记值。注意到，sigmoid函数有以下性质：
 * $z \ge 0$时，$0.5 \le \sigma(z) \lt 1$
 * $z \lt 0$时，$0 \lt \sigma(z) \lt 0.5$
@@ -39,9 +39,9 @@
 如果由上图左边的训练样本，得到了右边成本函数中的各参数值，那么当$0.5 \le \hat{y}$时，有：$$ w^Tx + b  = -3 + x_1 + x_2 \ge 0$$
 即：$$x_1 + x_2 \ge 3$$
 
-该不等式取的是图中分界线以上的部分，也就是正类所在的区域。同理$h_\theta(x) \lt 0.5$时，将取图中的反类。图中的那条分界线，称为两类的**决策边界（decision boundary）**，显然，其位置由参数$w$、$b$的值决定。
+该不等式取的是图中分界线以上的部分，也就是正类所在的区域。同理$h_\theta(x) \lt 0.5$时，将取图中的反类。图中的那条分界线，称为两类的**决策界限（decision boundary）**，显然，其位置由参数$w$、$b$的值决定。
 
-此外，sigmoid函数可用于非线性函数，而得到复杂的分类问题的决策边界：
+此外，sigmoid函数可用于非线性函数，而得到复杂的分类问题的决策界限：
 ![非线性决策边界](https://ws1.sinaimg.cn/large/82e16446ly1g1cuznrzsqj20ua0at0yk.jpg)
 
 ### 成本函数
@@ -108,7 +108,7 @@ $$ \frac{\partial}{\partial b} \mathcal{J}(w, b) = \frac{1}{m}\sum_{i=1}^m \hat{
 
 ***
 #### 相关程序
-*[Ng-DL1-week2-猫图分类器](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Deep_Learning/1_Neural_Network/week_2/Cat_Classification_Logistic_Regression_Numpy.ipynb)
+* [Ng-DL1-week2-猫图分类器](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Deep_Learning/1_Neural_Network/week_2/Cat_Classification_Logistic_Regression_Numpy.ipynb)
 
 #### 参考资料
 1. [Andrew Ng-Machine Learning-Coursera](https://www.coursera.org/learn/machine-learning/)
