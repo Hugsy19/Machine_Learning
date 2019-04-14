@@ -93,6 +93,8 @@ $$ \frac{\partial}{\partial b} \mathcal{J}(w, b) = \frac{1}{m}\sum_{i=1}^m \hat{
 
 除了梯度下降以外，还存在一些常用的较复杂的优化算法，如**共轭梯度法（onjugate gradient）**、**BFGS**、**L-BFGS**等，它们都可以用来代替梯度下降法进行参数学习。
 
+### Softmax回归
+
 ### 应用：猫图分类器
 用Logistic回归构建一个猫图分类器，即输入一张图片，希望该分类器准确判断出该图片是否是一张猫图。
 

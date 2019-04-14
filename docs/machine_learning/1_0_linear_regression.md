@@ -50,7 +50,7 @@
 
 要得到所谓的梯度，其实就是对函数进行求导。成本函数常常是一个多元函数，对其求导的过程是求取其关于各参数的偏导数。例如对“房价预测”问题的成本函数$J$，就有其关于$w_1$的偏导数$\frac{\partial}{\partial w_1} \mathcal{J}$。
 
-进行梯度下降前，通常要对训练样本进行[标准化（特征放缩）]()。实现梯度下降的具体算法为：$$ \begin{aligned} & \text{Repeat}\ \lbrace \\\ &\ \ \ \ w_j := w_j - \alpha \frac{\partial}{\partial w_j} \mathcal{J}(w_0, \cdots, w_n, b) \ \ \ \ j \in \lbrace 1,2...n\rbrace \\\ & \ \ \ \ b := b - \alpha \frac{\partial}{\partial b} \mathcal{J}(w_0, \cdots, w_n, b)\\\ & \rbrace  \\\ & \text{直到其中各参数的值收敛}\end{aligned}$$
+进行梯度下降前，通常要对训练样本进行[归一化]()。实现梯度下降的具体算法为：$$ \begin{aligned} & \text{Repeat}\ \lbrace \\\ &\ \ \ \ w_j := w_j - \alpha \frac{\partial}{\partial w_j} \mathcal{J}(w_0, \cdots, w_n, b) \ \ \ \ j \in \lbrace 1,2...n\rbrace \\\ & \ \ \ \ b := b - \alpha \frac{\partial}{\partial b} \mathcal{J}(w_0, \cdots, w_n, b)\\\ & \rbrace  \\\ & \text{直到其中各参数的值收敛}\end{aligned}$$
 
 其中的“:=”意为“赋值”；$\alpha$是称为**学习率（learning rate）**，它用来控制梯度下降时的“步伐”大小，该参数值是人为设定的，非通过学习得到，这样一类参数统一被称为**超参数（Hyperparameter）**，机器学习中所谓的“调参”中调节的正式这种参数。
 
