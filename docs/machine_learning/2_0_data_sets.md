@@ -26,7 +26,7 @@
     $$ \mu = \frac{1}{m} \sum_{i=1}^m x_i, \ \ \  \sigma = \sqrt{\frac{1}{m} \sum_{i=1}^m (x_i - \mu)^2}$$ 
 
     则：
-    $$ x_i := \frac{x_i - \mu{\sigma} $$  
+    $$ x_i := \frac{x_i - \mu}{\sigma}$$  
 
     通过上式进行标准化后，数据服从均值为$0$，方差为$1$的正态分布。
 
