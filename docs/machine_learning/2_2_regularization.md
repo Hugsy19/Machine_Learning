@@ -39,7 +39,7 @@
 
 更新权重时将有：$$ W^{[l]} := W^{[l]} - \alpha \frac{\partial \mathcal{L}(W, b)}{\partial W^{[l]}} - \alpha \frac{\lambda}{m} W^{[l]}$$
 
-此外，线性回归中采用正规方程直接求解模型中的参数$w$时，也可以进行正规化。其表达式为：$$w = \left( X^TX + \lambda \cdot L \right)^{-1} X^Ty$$
+此外，线性回归中采用正规方程直接求解模型中的参数$w$时，也可以进行正则化。其表达式为：$$w = \left( X^TX + \lambda \cdot L \right)^{-1} X^Ty$$
 
 其中的正则化项$L$是大小是$(n+1)\times(n+1)$的矩阵：$$L = \begin{bmatrix} 0 & & & & \\\ & 1 & & & \\\ & & 1 & & \\\ & & & \ddots & \\\ & & & & 1 \\\ \end{bmatrix}$$
 

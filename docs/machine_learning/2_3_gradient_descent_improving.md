@@ -1,5 +1,15 @@
+前面介绍梯度下降法时，曾提到过当目标函数（即成本函数）存在多个极值点时，下降到最后可能落入局部最小值点上：
+
+![局部最小值](https://ws1.sinaimg.cn/large/82e16446ly1g23bqkefeyj20g708kwen.jpg)
+
+而事实上，深度学习里面涉及的模型通常是高维度的，目标函数中存在的**鞍点（saddle point）**往往比极值点要多得多：
+
+![鞍点](https://ws1.sinaimg.cn/large/82e16446ly1g23bx3qfdpj20kh08naa3.jpg)
+
+如此看来，在深度学习中要找到目标函数的全局最优解异常困难，这也是深度学习一直面临的挑战之一，而实际中，也因此研究出来了许多针对梯度下降的优化算法。
 
 ### 小批量随机梯度下降
+
 使用梯度下降法学习参数过程中，当训练样本数量$m$较小时，通常使用所有的样本来迭代更新参数值，此时用到所用的梯度下降被称为**批梯度下降（Batch Gradient Descent，BGD）**。然而当$m$比较大时，使用BGD的话每次迭代过程运算量会很大，而使训练过程变得缓慢，此时可以考虑将训练样本平均切分成几小批，用它们进行**小批量梯度下降（Mini-Batch Gradient Descent，MBGD）**。
 
 将$m$个训练样本分为$k$小批（batch），除了余下的$m\%k$个外，每小批将有$t = m/k$个训练样本，在上标中用$\\{i\\}$标识第$i$小批，则MBGD的过程中有：$$X = \\{x^{\\{1\\}},x^{\\{2\\}},\cdots,x^{\\{k\\}}\\}$$ $$Y = \\{y^{\\{1\\}},y^{\\{2\\}},\cdots,y^{\\{k\\}}\\}$$
@@ -16,77 +26,99 @@ MBGD中，每小批内的样本数量$t$是一个超参数，为了契合计算�
 
 当前较常用的，是将小批量和随机梯度下降方法结合起来的**小批量随机梯度下降（Mini-Batch Stochastic Gradient Descent，MSGD)**。在MSGD中，通过随机均匀采样训练样本来得到一个小批量，期间可以设置允许重复采样与否。
 
-### 指数加权平均
+### 指数加权移动平均
+**指数加权移动平均（Exponentially Weight Moving Average，EWMA）**是一种经济学中常用的数据处理方式，它将加权平均和移动平均结合起来，把当前和前一段时期内的真实值进行指数加权后，用来平滑修改当前的值，从而生成平稳的趋势曲线。
 
-**指数加权平均（Exponentially Weight Average）**是一种常用的序列数据处理方式，其计算公式为：$$S\_t = \begin{cases} Y\_1, & t=1 \\\ \beta S\_{t-1} + (1-\beta)Y\_{t}, & t>1 \end{cases}$$
-其中$Y_t$为t下的实际值，$S_t$为t下加权平均后的值，$\beta$为权重值。
-给定一个时间序列，例如伦敦一年每天的气温值：
+在$t$时刻，移动平均值$v_t$的计算公式为：$$v_t = \beta v_{t-1} + (1-\beta)\theta_t$$
 
-![气温时间图](https://ws1.sinaimg.cn/large/82e16446ly1fk9ig3abvhj20oa077jsf.jpg)
+其中$\theta_t$为$t$时刻下的实际值，$\beta$为权值，它的大小决定了对过去数据的偏重程度。
 
-其中蓝色的点代表了真实的数据值。
-对于一个即时的温度值，取权重值$\beta$为0.9，则有：$$ v\_0 = 0 $$ $$v\_1 = 0.9v\_0 + 0.1\theta\_1$$ $$... \ ... $$ $$v\_{100} = 0.1\theta\_{100}+0.1 \times 0.9\theta\_{99} +0.1 \times 0.9^2\theta\_{98} \ ...$$ $$ v\_t =  0.9v\_{t-1} + 0.1\theta\_t $$
-根据：$$\lim_{\epsilon \to 0} (1-\epsilon)^{\frac{1}{\epsilon}} = \frac{1}{e} \approx 0.368$$
+例如收集到了伦敦一年时间里每日的气温数据，将这些按日期绘制成下图中右边的散点图：
 
-$\beta=1 - \epsilon = 0.9$时相当于把过去 $\frac{1}{\epsilon} = 10$天的气温值指数加权平均后，作为当日的气温，且只取10天前的气温值的$0.368$，也就是$\frac{1}{3}$多一些。
+![气温散点图](https://ws1.sinaimg.cn/large/82e16446ly1g23g6yfpmhj20s408ata3.jpg)
 
-由此求得的值即得到图中的红色曲线，它反应了温度变化的大致趋势。
+要根据这些数据绘制一条气温的变化趋势线，就可以用到上述的公式来计算每日的移动平均值。这里先直接令$v_0 = 0$，并取$\beta = 0.9$，则有：
+$$v_1 = 0.9v_0 + 0.1\theta_1$$ $$\begin{aligned} v_2 & = 0.9v_1 + 0.1 \theta_2 \\\ & = 0.9 \times 0.1\theta_1 +  0.1 \theta_2\end{aligned}$$ $$ \vdots $$ $$\begin{aligned} v_{100} & = 0.9v_{99} + 0.1 \theta_{100} \\\ & = (0.9)^{99} \times 0.1\theta_{1} + \cdots + 0.9 \times 0.1\theta_{99} + 0.1\theta_{100}\end{aligned}$$ $$ \vdots $$
 
-![EWA曲线](https://ws1.sinaimg.cn/large/82e16446ly1fk9j8j981jj20k00a1q4f.jpg)
+如此就可以得到图中的红色曲线。从上面的式子可以看出，各真实值的权值中，均会包含$\beta$的幂次方项。
 
-当取权重值$\beta=0.98$时，可以得到图中更为平滑的绿色曲线。而当取权重值$\beta=0.5$时，得到图中噪点更多的黄色曲线。$\beta$越大相当于求取平均利用的天数就越多，曲线自然就会越平滑而且越滞后。
+令$n = \frac{1}{1 - \beta}$，则有：$$(1 - \frac{1}{n})^n = \beta^{\frac{1}{1 - \beta}}$$
 
-当进行指数加权平均计算时，第一个值$v_o$被初始化为$0$，这样将在前期的运算用产生一定的偏差。为了矫正偏差，需要在每一次迭代后用以下式子进行偏差修正：$$v_t := \frac{v_t}{1-\beta^t}$$
+根据重要极限，有：$$\lim_{n \to \infty} (1- \frac{1}{n})^n = \frac{1}{e} \approx 0.3679 $$
+
+当$n \to \infty$时$\beta \to 1$，则：$$\lim_{\beta \to 1} \beta^{\frac{1}{1 - \beta}} = \frac{1}{e}$$
+
+所以当$\beta = 0.9$，有：$$\beta^{\frac{1}{1 - \beta}}=0.9^{10} \approx \frac{1}{e}$$
+
+将此时也就是$\beta$取$\frac{1}{1 - \beta}$次方时得到的值认为已经足够小，从而把EWMA公式中该项以及后面更高阶的项作为权值求出的结果均忽略不计。由此，可以认为由EWMA公式得到的$t$时刻的移动平均值$v_t$，是对该时刻前的$\frac{1}{1 - \beta}$个$\theta$值进行指数加权平均后而得到，且距离时刻$t$越近，其权值也就越大。
+
+由此，原来得到的红色变化趋势线相当把过去 $\frac{1}{1 - 0.9} = 10$天的气温值指数加权平均后作为当日的气温。
+
+想得到更为平滑的变化趋势线，可以增大$\beta$的值。例如$\beta = 0.98$时，可得下图中绿色曲线。而当$\beta=0.5$时，会得到图中波动剧烈的黄色曲线。$\beta$越大则越偏重于考察以往的数据变化，从而使整体的变化趋势不易于受数据中某些噪点的影响。
+
+![变化趋势线](https://ws1.sinaimg.cn/large/82e16446ly1g23h2j6186j20nv0cfgnt.jpg)
+
+要注意，如果将$v_0$直接初始化为$0$，前期的运算将产生一定的偏差。该偏差可通过下式进行修正：$$\hat{v}\_t = \frac{v\_t}{1-\beta^t}$$
+
+修正后，对应上面的例子，将得到下面紫色的变化曲线：
+![偏差校正](https://ws1.sinaimg.cn/large/82e16446ly1g23l7zo17fj20lr09jn19.jpg)
+
+当$t$不断增大时，$\beta^t$的值趋近于$0$，所以随着时间推移紫色的曲线就慢慢与原来的绿色的变化曲线重合了。
 
 ### 动量法
+对某些目标函数，使用梯度下降参数学习时，如果某个方向上的梯度值过大，训练过程中会出现如下图所示的上下震荡，而导致收敛速度变得十分缓慢：
 
-**动量梯度下降（Gradient Descent with Momentum）**是计算梯度的指数加权平均数，并利用该值来更新参数值。具体过程为：$$v_{dw} = \beta v_{dw} + (1-\beta)dw$$ $$v_{db} = \beta v_{db} + (1-\beta)db$$ $$w := w-\alpha v_{dw}$$ $$ b := b-\alpha v_{db}$$
-其中的动量衰减参数$\beta$一般取0.9。
+![Hassian病态矩阵](https://ws1.sinaimg.cn/large/82e16446ly1g23mge1g30j20ry064tb6.jpg)
 
-![Momentum](https://ws1.sinaimg.cn/large/82e16446ly1fk9mtb1xvcj20m204tq3q.jpg)
+这种情况下，调整学习率可能又会影响到其他方向上的梯度值。可行的优化方法之一，就是引入上面所述的EWMA，采用论文[[On the momentum term in gradient descent learning algorithms](https://www.sciencedirect.com/science/article/pii/S0893608098001166/pdfft?md5=c301bb4f47a9c792c7bae7b878b57a28&pid=1-s2.0-S0893608098001166-main.pdf)]中提出的带**动量（Momentum）**的梯度下降，来使下降的过程变得更为平缓。
 
-进行一般的梯度下降将会得到图中的蓝色曲线，而使用Momentum梯度下降时，通过累加减少了抵达最小值路径上的摆动，加快了收敛，得到图中红色的曲线。
+使用动量法，梯度下降后更新参数的过程将变为：$$v_{dW_t} = \beta v_{dW_{t-1}} + (1-\beta)dW_t$$ $$v_{db_t} = \beta v_{db_{t-1}} + (1-\beta)db_t$$ $$W_t = W_{t-1} - \alpha v_{dW_t}$$ $$ b_t = b_{t-1}  -\alpha v_{db_t}$$
 
-当前后梯度方向一致时，Momentum梯度下降能够加速学习；前后梯度方向不一致时,Momentum梯度下降能够抑制震荡。
+其中的$v_t$代表各梯度值的EWMA值，初始值$v_0 = 0$。超参数也就是EWMA中的权值$\beta$通常取$0.9$，学习率$\alpha$则依然需要根据实际情况进行调参。
+
+使用带动量的梯度下降，梯度下降的过程将变成下图中红色的曲线所示：
+
+![Momentum](https://ws1.sinaimg.cn/large/82e16446ly1g23n7mjfiej20me050gls.jpg)
+
+引入动量法后，更新参数时用到梯度值将是前面几次的梯度值进行EWMA后的值，这样能有效平滑下降过程，从而提高收敛速度。
+
+### AdaGrad算法
+进行参数学习时，对于某些方向上的梯度值存在的较大差别的问题，动量法中是利用EWMA来使得参数更新的方向更一致来解决。在论文[[Adaptive Subgradient Methods forOnline Learning and Stochastic Optimization](http://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf)]中提出的AdaGrad算法，则根据各方向上的梯度值来动态调整各方向上的学习率，来解决该问题。
+
+使用AdaGrad算法进行参数时，有：$$s_{dW_t} = s_{dW_{t-1}} + dW\_t^2$$ $$s_{db_t} = s_{db_{t-1}} + db\_t^2$$ $$W_t = W_{t-1}  - \frac{\alpha}{\sqrt{s_{dW_t}+\epsilon}}dW_t$$ $$b_t = b_{t-1}  - \frac{\alpha}{\sqrt{s_{db_t}+\epsilon}} db_t$$
+
+其中的$s_t$是各梯度值的平方累加值，初始值$s_0 = 0$，用它作分母来控制学习率的大小。当目标函数某个方向上的梯度较大时，学习率也会减小得较快，反之学习率将减小得较慢。另外，$\epsilon$用来维护数据稳定性，防止$s_t = 0$时出现分母为$0$的错误，通常可以取$\epsilon=10^{-8}$。
+
+使用AdaGrad算法迭代到后期，学习率将变得很小，此时可能将难以找到一个有用的解。
 
 ### RMSProp算法
+为解决AdaGrad算法后期难以找到有用解的问题，深度学习邻域的三巨头之一——Geoff Hinton在Coursera上讲授的[Neural Networks for Machine Learning]课程中首次提出了**RMSProp（Root Mean Square Prop）**算法，它在AdaGrad的基础上引入了动量法中用所用的EWMA。具体的参数更新过程为：$$s_{dW_t} = \beta s_{dW_{t-1}} + (1-\beta)dW^2\_t$$ $$s_{db_t} = \beta s_{db_{t-1}} + (1-\beta)db\_t^2$$ $$W_t := W_{t-1}  - \frac{\alpha}{\sqrt{s_{dW_t}+\epsilon}}dW_t$$ $$b_t := b_{t-1} - \frac{\alpha}{\sqrt{s_{db_t}+\epsilon}} db_t$$
 
-**RMSProp(Root Mean Square Prop，均方根支)**算法在对梯度进行指数加权平均的基础上，引入平方和平方根。具体过程为：$$s\_{dw} = \beta s\_{dw} + (1-\beta)dw^2$$ $$s\_{db} = \beta s\_{db} + (1-\beta)db^2$$ $$w := w-\alpha \frac{dw}{\sqrt{s\_{dw}+\epsilon}}$$ $$b := b-\alpha \frac{db}{\sqrt{s\_{db}+\epsilon}}$$
-其中的$\epsilon=10^{-8}$，用以提高数值稳定度，防止分母太小。
+这里的$s_t$表示的是各梯度值平方后的EWMA值且$s_0 = 0$。添加$\epsilon$的目的和前面一样，且通常可以取$\epsilon=10^{-8}$。
 
-当$dw$或$db$较大时，$dw^{2}$、$db^{2}$会较大，造成$s\_{dw}$、 $s\_{db}$也会较大，最终使$\frac{dw}{\sqrt{s\_{dw}}}$、 $\frac{db}{\sqrt{s\_{db}}}$较小，减小了抵达最小值路径上的摆动。
+### AdaDelta算法
+和RMSProp算法一样，论文[[ADADELTA: An Adaptive Learning Rate Method](https://arxiv.org/pdf/1212.5701)]中提出的AdaDelta算法，也是在AdaGrad的基础上进行改进。更新参数时，前面的过程和RMSProp算法一致：$$s_{dW_t} = \beta s_{dW_{t-1}} + (1-\beta)dW^2\_t$$ $$s_{db_t} = \beta s_{db_{t-1}} + (1-\beta)db\_t^2$$
 
-### Adam优化算法
-**Adam(Adaptive Moment Estimation，自适应矩估计)**优化算法适用于很多不同的深度学习网络结构，它本质上是将Momentum梯度下降和RMSProp算法结合起来。具体过程为：$$v\_{dw} = \beta\_1 v\_{dw} + (1-\beta\_1)dw, \ v\_{db} = \beta\_1 v\_{db} + (1-\beta\_1)db$$ $$s\_{dw} = \beta\_2 s_{dw} + (1-\beta\_2)dw^2,\ s\_{db} = \beta\_2 s\_{db} + (1-\beta\_2)db^2$$ $$v^{corrected}\_{dw} = \frac{v\_{dw}}{(1-\beta\_1^t)},\ v^{corrected}\_{db} = \frac{v\_{db}}{(1-\beta\_1^t)}$$ $$s^{corrected}\_{dw} = \frac{s\_{dw}}{(1-\beta\_2^t)},\ s^{corrected}\_{db} = \frac{s\_{db}}{(1-\beta\_2^t)}$$ $$w := w-\alpha \frac{v^{corrected}\_{dw}}{\sqrt{s^{corrected}\_{dw}}+\epsilon}$$ $$b := b-\alpha \frac{v^{corrected}\_{db}}{\sqrt{s^{corrected}\_{db}}+\epsilon}$$
-其中的学习率$\alpha$需要进行调参，超参数$\beta\_1$被称为第一阶矩，一般取0.9，$\beta\_2$被称为第二阶矩，一般取0.999，$\epsilon$一般取$10^{-8}$。
+不同的是，AdaDelta算法中新增了$\Delta$项来替代学习率$\alpha$，从而求得各梯度的变化量：
+$$dW_t' = \sqrt{\frac{\Delta dW_{t-1} + \epsilon}{s_{dW_t}+\epsilon}} dW_t$$ $$ db_t' = \sqrt{\frac{\Delta db_{t-1} + \epsilon}{s_{db_t}+\epsilon}} db_t$$ 
 
-### 学习率衰减
+其中$\epsilon$的作用依然和前面的算法相同，可以取$\epsilon=10^{-8}$。随后，更新参数，有：$$W_t = W_{t-1}  - dW_t'$$ $$b_t = b_{t-1} - db_t'$$
 
-随着时间推移，慢慢减少学习率$\alpha$的大小。在初期$\alpha$较大时，迈出的步长较大，能以较快的速度进行梯度下降，而后期逐步减小$\alpha$的值，减小步长，有助于算法的收敛，更容易接近最优解。
-常用到的几种学习率衰减方法有：$$\alpha = \frac{1}{1+\text{decay_rate }\* \text{epoch_num}} \* \alpha\_0$$ $$\alpha = 0.95^{\text{epoch_num}} \* \alpha\_0$$ $$\alpha = \frac{k}{\sqrt{\text{epoch_num}} }\* \alpha\_0$$
-其中的decay_rate为衰减率，epoch_num为将所有的训练样本完整过一遍的次数。
+而$\Delta$项则记录各梯度的变化量平方后的EWMA值，其在$t=0$时的初始值为$0$：$$\Delta dW_t = \beta \Delta dW_{t-1} + (1-\beta)dW'^2\_t$$ $$\Delta db_t = \beta \Delta db_{t-1} + (1-\beta)db'^2\_t$$
 
+### Adam算法
+论文[[Adam: A Method for Stochastic Optimization](https://arxiv.org/pdf/1412.6980v8)]中提出的**Adam(Adaptive Moment Estimation)**算法中，结合了动量法和RMSProp，该算法适用于多种深度学习模型。首先分别计算各梯度值、各梯度值平方后的EWMA值$v_t$、$s_t$：$$v_{dW_t} = \beta_1 v_{dW_{t-1}} + (1-\beta_1)dW_t $$ $$v_{db_t} = \beta_1 v_{db_{t-1}} + (1-\beta_1)db_t$$ $$s_{dW_t} = \beta_2 s_{dW_{t-1}} + (1-\beta_2)dW\_t^2$$ $$s_{db_t} = \beta_2 s_{db_{t-1}} + (1-\beta_2)db\_t^2$$ 
 
-### 梯度检验
+上式中，超参数$\beta_1$被称为**第一阶矩**，一般取$0.9$，$\beta_2$被称为**第二阶矩**，一般取$0.999$。不同于前面几种用到EWMA的算法，这里需要对计算出来的EWMA值进行偏差修正，而得到$\hat{v}\_t$、$\hat{s}\_t$：$$\hat{v}\_{dW\_t} = \frac{v_{dW_t}}{(1-\beta_1^t)},\ \ \ \hat{v}\_{db\_t} = \frac{v_{db_t}}{(1-\beta_1^t)}$$ $$\hat{s}\_{dW\_t} = \frac{s_{dW_t}}{(1-\beta_2^t)},\ \ \ \hat{s}\_{db\_t} = \frac{s_{db_t}}{(1-\beta_2^t)}$$ 
 
-梯度检验的实现原理，是根据导数的定义，对成本函数求导，有：$$ J'(\theta) = \frac{\partial J(\theta)}{\partial \theta}= \lim_{\epsilon\rightarrow 0}\frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon}$$
+最后更新参数：$$W_t = W_{t-1} - \alpha \frac{\hat{v}\_{dW\_t}}{\sqrt{\hat{s}\_{dW\_t} +\epsilon}}$$ $$b_t = b_{t-1} - \alpha \frac{\hat{v}\_{db\_t}}{\sqrt{\hat{s}\_{db\_t} +\epsilon}}$$
 
-则梯度检验公式：$$J'(\theta) = \frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon}$$
+其中的学习率$\alpha$需要根据实际情况进行调参，$\epsilon$的作用和前面一样，且通常取$\epsilon=10^{-8}$。
 
-其中当$\epsilon$越小时，结果越接近真实的导数也就是梯度值。可以使用这种方法，来判断反向传播进行梯度下降时，是否出现了错误。
+下图是上面所述的几种算法在某个目标函数上的实际表现：
 
-梯度检验的过程，是对成本函数的每个参数$\theta\_{[i]}$加入一个很小的$\epsilon$，求得一个梯度逼近值$d\theta\_{approx[i]}$：
-$$d\theta\_{approx[i]} = \frac{J(\theta\_{[1]},\theta\_{[2]},...,\theta\_{[i]}+\epsilon)-J(\theta\_{[1]},\theta\_{[2]},...,\theta\_{[i]}-\epsilon)}{2\epsilon}$$
+![算法对比](https://ws1.sinaimg.cn/large/82e16446ly1g24i0q2lzpg20h80dc4n1.gif)
 
-以解析方式求得$J'(\theta)$在$\theta$时的梯度值$d\theta$,进而再求得它们之间的欧几里得距离：
-$$\frac{||d\theta\_{approx[i]}-d\theta||\_2}{||d \theta\_{approx[i]}||\_2+||dθ||\_2}$$
-
-其中$||x||_2$表示向量x的2范数（各种范数的定义见参考资料）：
-$$||x||\_2 = \sum\limits\_{i=1}^N |x\_i|^2$$
-
-当计算的距离结果与$\epsilon$的值相近时，即可认为这个梯度值计算正确，否则就需要返回去检查代码中是否存在bug。
-
-需要注意的是，不要在训练模型时进行梯度检验，当成本函数中加入了正则项时，也需要带上正则项进行检验，且不要在使用随机失活后使用梯度检验。
 ***
 #### 相关程序
 
@@ -96,7 +128,8 @@ $$||x||\_2 = \sum\limits\_{i=1}^N |x\_i|^2$$
 2. [Andrew Ng-Improving Deep Neural Networks-Coursera](https://www.coursera.org/learn/deep-neural-network/)
 3. [动手学深度学习](http://zh.d2l.ai/index.html)
 4. [梯度下降法的三种形式-博客园](http://www.cnblogs.com/maybe2030/p/5089753.html)
-5. [什么是批标准化-知乎专栏](https://zhuanlan.zhihu.com/p/24810318)
+5. [优化算法之指数移动加权平均-知乎专栏](https://zhuanlan.zhihu.com/p/32335746)
+6. [梯度下降优化算法综述-博客园](https://www.cnblogs.com/ranjiewen/p/5938944.html)
 
 #### 更新历史
-* 2019.04.04 完成初稿
+* 2019.04.16 完成初稿
