@@ -31,7 +31,7 @@ w_l = np.random.randn(layers_dims[l],layers_dims[l-1]) / np.sqrt(layers_dims[l-1
 
 ***
 #### 相关程序
-
+* [Ng-DL2-week1-权重初始化](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Deep_Learning/2_Neural_Network_Improve/week_1/Weight_Initializaition.ipynb)
 
 #### 参考资料
 1. [吴恩达-改善深层神经网络-网易云课堂](http://mooc.study.163.com/course/deeplearning_ai-2001281003#/info)

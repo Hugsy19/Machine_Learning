@@ -102,8 +102,9 @@ $$\begin{aligned} \mathcal{L}(\hat{y}, y) & =- y\log \hat{y} - (1-y)\log(1 - \ha
 
 ***
 #### 相关程序
-* [Ng-DL1-week3-猫图分类器](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Deep_Learning/1_Neural_Network/week_3/Cat_Classfication_Neural_NetWork_Numpy.ipynb)
-* [Ng-DL1-week4-花瓣分类器](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Deep_Learning/1_Neural_Network/week_4/Planar_Date_Classification.ipynb)
+* [Ng-DL1-week3-花瓣分类器](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Deep_Learning/1_Neural_Network/week_3/Planar_Date_Classification.ipynb)
+
+* [Ng-DL1-week4-猫图分类器](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Deep_Learning/1_Neural_Network/week_4/Cat_Classfication_Neural_NetWork_Numpy.ipynb)
 
 #### 参考资料
 1. [吴恩达-神经网络与深度学习-网易云课堂](http://mooc.study.163.com/learn/deeplearning_ai-2001281002)

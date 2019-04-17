@@ -121,7 +121,7 @@ $$dW_t' = \sqrt{\frac{\Delta dW_{t-1} + \epsilon}{s_{dW_t}+\epsilon}} dW_t$$ $$ 
 
 ***
 #### 相关程序
-
+* [Ng-DL2-week2-梯度下降优化](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Deep_Learning/2_Neural_Network_Improve/week_2/Gradient_Improving_Methods.ipynb)
 
 #### 参考资料
 1. [吴恩达-改善深层神经网络-网易云课堂](http://mooc.study.163.com/course/deeplearning_ai-2001281003#/info)

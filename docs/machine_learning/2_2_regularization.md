@@ -87,7 +87,8 @@ z4 = np.dot(w4, a3) + b4
 
 ***
 #### 相关程序
-
+* [Ng-ML-ex2-Logistic回归](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Machine_Learning/ex2/ex2_Logistic_Regression_Regularization.ipynb)
+* [Ng-DL2-week1-正则化](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Deep_Learning/2_Neural_Network_Improve/week_1/Regularization.ipynb)
 
 #### 参考资料
 1. [Andrew Ng-Machine Learning-Coursera](https://www.coursera.org/learn/machine-learning/)

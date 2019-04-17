@@ -109,6 +109,7 @@ $$\frac{\partial}{\partial w_1} \mathcal{J}(w_1, b) = \frac{1}{m} \sum_{i=1}^m (
 
 ***
 #### 相关程序
+* [Ng-ML-ex1-线性回归](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Machine_Learning/ex1/ex1_Linear_Regression_Multi.ipynb)
 
 #### 参考资料
 1. [Andrew Ng-Machine Learning-Coursera](https://www.coursera.org/learn/machine-learning/)

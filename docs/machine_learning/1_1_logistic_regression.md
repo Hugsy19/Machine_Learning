@@ -110,6 +110,7 @@ $$ \frac{\partial}{\partial b} \mathcal{J}(w, b) = \frac{1}{m}\sum_{i=1}^m \hat{
 
 ***
 #### 相关程序
+* [Ng-ML-ex2-Logistic回归](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Machine_Learning/ex2/ex2_Logistic_Regression.ipynb)
 * [Ng-DL1-week2-猫图分类器](https://github.com/BinWeber/Machine_Learning/blob/master/Ng_Deep_Learning/1_Neural_Network/week_2/Cat_Classification_Logistic_Regression_Numpy.ipynb)
 
 #### 参考资料
