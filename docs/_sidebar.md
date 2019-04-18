@@ -11,7 +11,7 @@
   * [梯度下降优化](machine_learning/2_3_gradient_descent_improving)
 * 卷积神经网络
   * [基本单元](machine_learning/3_0_cnn_basic_unit)
-  * [经典结构](machine_learning/3_1_cnn_classical)
+  * [经典结构](machine_learning/3_1_cnn_classical_structure)
   * [应用](machine_learning/3_2_cnn_application)
 * [循环神经网络]()
 * [K-近邻算法](machine_learning/5_0_k_nearest_neighbor)
