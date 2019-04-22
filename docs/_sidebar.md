@@ -12,7 +12,8 @@
 * 卷积神经网络
   * [基本单元](machine_learning/3_0_cnn_basic_unit)
   * [经典结构](machine_learning/3_1_cnn_classical_structure)
-  * [应用](machine_learning/3_2_cnn_application)
+  * [目标检测](machine_learning/3_2_object_detection)
+  * [其他应用](machine_learning/3_3_cnn_others_application)
 * [循环神经网络]()
 * [K-近邻算法](machine_learning/5_0_k_nearest_neighbor)
 * [支持向量机]()
