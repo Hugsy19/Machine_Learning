@@ -1,6 +1,6 @@
 机器学习领域所说的神经网络，指的是一种模仿生物神经网络的结构和功能而建立的数学或计算模型，用于对函数进行估计或近似。前面介绍过的Logistic回归，就可以用一个简单的神经网络模型表示如下：
 
-![Logistic回归](https://ws1.sinaimg.cn/large/82e16446ly1g1xnu0507oj20o007kaaj.jpg)
+![Logistic回归](https://i.loli.net/2019/05/05/5cce9f3526450.jpg)
 
 Logistic回归以及线性回归都可以看作一个单层的神经网络。虽然上图中可分为两层——由训练样本组成的**输入层（input layer）**和负责输出结果的**输出层（output layer）**，但由于输入层中并不涉及运算而不计入层数中，因此上面所示的的神经网络中层数为$1$。其中输出层是一个**神经元（nurual unit）**，它与上一层中的各个输入完全连接，因此又把输出层称为**全连接层（fully-connecte layer）**或**稠密层（dense layer）**。
 
@@ -16,7 +16,7 @@ tanh函数又称为双曲正切函数（Hyperbolic Tangent Function），其表�
 
 图像为：
 
-![tanh函数](https://ws1.sinaimg.cn/large/82e16446ly1g1z02aonvnj20iv0870ta.jpg)
+![tanh函数](https://i.loli.net/2019/05/05/5cce9f5027e4c.jpg)
 
 tanh函数其实上是经过平移的sigmoid函数。对于神经网络中的隐藏单元，如果选用tanh函数作为激活函数，因为它的值限定在$-1$到$1$之间，激活后所有输出结果的平均值将趋近于$0$，而采用sigmoid函数时平均值将为的$0.5$，更小的平均值可以使下一层网络的学习过程变得更为轻松，因此它的效果总比sigmoid函数好。
 
@@ -34,7 +34,7 @@ ReLU函数又称为线性修正单元（Rectified Linear Unit），它是当前�
 
 图像为：
 
-![ReLU函数](https://ws1.sinaimg.cn/large/82e16446ly1g1z0ou64faj20qk0b4t8v.jpg)
+![ReLU函数](https://i.loli.net/2019/05/05/5cce9f662cc8f.jpg)
 
 导函数为：$$g'(z) =\begin{cases} 0,  & \text{($z \lt 0$)} \\\ 1, & \text{($z \gt 0$)} \end{cases} $$
 
@@ -42,7 +42,7 @@ ReLU函数又称为线性修正单元（Rectified Linear Unit），它是当前�
 
 要解决这个问题，存在一个称为**Leaky-ReLU**的ReLU函数修正版本，其表达式及图像如下：$$g(z) = max(0,z) =\begin{cases} \alpha z,  & \text{($z$ $\le$ 0)} \\\ z, & \text{($z$ $\gt$ 0)} \end{cases} $$
 
-![Leaky-ReLU](https://ws1.sinaimg.cn/large/82e16446ly1fjujlnn9tgj20de07m3ye.jpg)
+![Leaky-ReLU](https://i.loli.net/2019/05/05/5cce9f8e11d33.jpg)
 
 其中$ \alpha $是一个很小的常数，用来保留一部非负数轴的值。
 
@@ -50,7 +50,7 @@ ReLU函数又称为线性修正单元（Rectified Linear Unit），它是当前�
 
 下图所示是一个比前面的Logistic回归稍复杂的神经网络：
 
-![两层神经网络](https://ws1.sinaimg.cn/large/82e16446ly1g1z132bjuoj20jr0axjt9.jpg)
+![两层神经网络](https://i.loli.net/2019/05/05/5cce9f9f7287f.jpg)
 
 根据前面所述，这是一个层数为$L = 2$的神经网络。由于在训练神经网络的过程中，我们无法观察到处在输入层和输出层之间的网络层中产生的值，因此将这些中间的网络层统称为**隐藏层（hidden layer）**。对上图中的网络，只存在一层隐藏层。
 
@@ -72,7 +72,7 @@ ReLU函数又称为线性修正单元（Rectified Linear Unit），它是当前�
 $$\begin{aligned} \mathcal{L}(\hat{y}, y) & =- y\log \hat{y} - (1-y)\log(1 - \hat{y}) \\\ & = - y\log a^{[2]} - (1-y)\log(1 - a^{[2]})\end{aligned}$$
 
 对上面的所有过程，可以用一个简单的流程图表示如下：
-![前向传播](https://ws1.sinaimg.cn/large/82e16446ly1g1zoh3ibisj20r706fmxi.jpg)
+![前向传播](https://i.loli.net/2019/05/05/5cce9fab3d53c.jpg)
 
 在神经网络中，所谓的**正向传播（Forward Propagation）**，就是这样一个从前往后递进传播的计算过程。
 
@@ -82,7 +82,7 @@ $$\begin{aligned} \mathcal{L}(\hat{y}, y) & =- y\log \hat{y} - (1-y)\log(1 - \ha
 
 ### 反向传播
 前面我们通常采用梯度下降法来将损失进行最小化，在神经网络中则采用**BP算法**也就是**反向传播（Back Propagation）** 来实现这一过程。还是以前面的那个$2$层神经网络为例，其反向传播的完整过程如下图中的红色标识所示：
-![反向传播](https://ws1.sinaimg.cn/large/82e16446ly1fjupevz9aaj20r00aqt99.jpg)
+![反向传播](https://i.loli.net/2019/05/05/5cce9fc048473.jpg)
 
 反向传播的过程，是使损失函数$\mathcal{L}(a^{[L]}, y)$向前对网络中各参数分别进行求导。首先对输出层的激活$a^{[2]}$，根据求导法则有：$$da^{[2]} = \frac{\partial \mathcal{L}(a^{[2]}, y)}{\partial a^{[2]}} = -\frac{y}{a^{[2]}} + \frac{1 - y}{1 - a^{[2]}}$$
 

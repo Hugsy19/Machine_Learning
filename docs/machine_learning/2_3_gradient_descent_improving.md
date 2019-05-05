@@ -1,10 +1,10 @@
 前面介绍梯度下降法时，曾提到过当目标函数（即成本函数）存在多个极值点时，下降到最后可能落入局部最小值点上：
 
-![局部最小值](https://ws1.sinaimg.cn/large/82e16446ly1g23bqkefeyj20g708kwen.jpg)
+![局部最小值](https://i.loli.net/2019/05/05/5cce9ddfc296a.jpg)
 
 而事实上，深度学习里面涉及的模型通常是高维度的，目标函数中存在的**鞍点（saddle point）**往往比极值点要多得多：
 
-![鞍点](https://ws1.sinaimg.cn/large/82e16446ly1g23bx3qfdpj20kh08naa3.jpg)
+![鞍点](https://i.loli.net/2019/05/05/5cce9dec64642.jpg)
 
 如此看来，在深度学习中要找到目标函数的全局最优解异常困难，这也是深度学习一直面临的挑战之一，而实际中，也因此研究出来了许多针对梯度下降的优化算法。
 
@@ -20,7 +20,7 @@
 
 MBGD中，每小批内的样本数量$t$是一个超参数，为了契合计算机的数据存储方式，通常取根据$m$的大小取$2$的幂次方。且通常使用MBGD得到的成本变化曲线会比使用BGD多出很多噪声：
 
-![MBGD](https://ws1.sinaimg.cn/large/82e16446ly1g22cfzh7apj20v70b70tk.jpg)
+![MBGD](https://i.loli.net/2019/05/05/5cce9dfbdaeed.jpg)
 
 另外还有**随机梯度下降（Stochastic Gradient Descent，SGD）**，每次通过随机采样一个训练样本来进行参数更新，而大大加快训练速度。然而该方法难以收敛，或者很容易收敛到局部最优解上。
 
@@ -35,7 +35,7 @@ MBGD中，每小批内的样本数量$t$是一个超参数，为了契合计算�
 
 例如收集到了伦敦一年时间里每日的气温数据，将这些按日期绘制成下图中右边的散点图：
 
-![气温散点图](https://ws1.sinaimg.cn/large/82e16446ly1g23g6yfpmhj20s408ata3.jpg)
+![气温散点图](https://i.loli.net/2019/05/05/5cce9e080952e.jpg)
 
 要根据这些数据绘制一条气温的变化趋势线，就可以用到上述的公式来计算每日的移动平均值。这里先直接令$v_0 = 0$，并取$\beta = 0.9$，则有：
 $$v_1 = 0.9v_0 + 0.1\theta_1$$ $$\begin{aligned} v_2 & = 0.9v_1 + 0.1 \theta_2 \\\ & = 0.9 \times 0.1\theta_1 +  0.1 \theta_2\end{aligned}$$ $$ \vdots $$ $$\begin{aligned} v_{100} & = 0.9v_{99} + 0.1 \theta_{100} \\\ & = (0.9)^{99} \times 0.1\theta_{1} + \cdots + 0.9 \times 0.1\theta_{99} + 0.1\theta_{100}\end{aligned}$$ $$ \vdots $$
@@ -56,19 +56,19 @@ $$v_1 = 0.9v_0 + 0.1\theta_1$$ $$\begin{aligned} v_2 & = 0.9v_1 + 0.1 \theta_2 \
 
 想得到更为平滑的变化趋势线，可以增大$\beta$的值。例如$\beta = 0.98$时，可得下图中绿色曲线。而当$\beta=0.5$时，会得到图中波动剧烈的黄色曲线。$\beta$越大则越偏重于考察以往的数据变化，从而使整体的变化趋势不易于受数据中某些噪点的影响。
 
-![变化趋势线](https://ws1.sinaimg.cn/large/82e16446ly1g23h2j6186j20nv0cfgnt.jpg)
+![变化趋势线](https://i.loli.net/2019/05/05/5cce9e188d783.jpg)
 
 要注意，如果将$v_0$直接初始化为$0$，前期的运算将产生一定的偏差。该偏差可通过下式进行修正：$$\hat{v}\_t = \frac{v\_t}{1-\beta^t}$$
 
 修正后，对应上面的例子，将得到下面紫色的变化曲线：
-![偏差校正](https://ws1.sinaimg.cn/large/82e16446ly1g23l7zo17fj20lr09jn19.jpg)
+![偏差校正](https://i.loli.net/2019/05/05/5cce9e260cfd4.jpg)
 
 当$t$不断增大时，$\beta^t$的值趋近于$0$，所以随着时间推移紫色的曲线就慢慢与原来的绿色的变化曲线重合了。
 
 ### 动量法
 对某些目标函数，使用梯度下降参数学习时，如果某个方向上的梯度值过大，训练过程中会出现如下图所示的上下震荡，而导致收敛速度变得十分缓慢：
 
-![Hassian病态矩阵](https://ws1.sinaimg.cn/large/82e16446ly1g23mge1g30j20ry064tb6.jpg)
+![Hassian病态矩阵](https://i.loli.net/2019/05/05/5cce9e37ba862.jpg)
 
 这种情况下，调整学习率可能又会影响到其他方向上的梯度值。可行的优化方法之一，就是引入上面所述的EWMA，采用论文[[On the momentum term in gradient descent learning algorithms](https://www.sciencedirect.com/science/article/pii/S0893608098001166/pdfft?md5=c301bb4f47a9c792c7bae7b878b57a28&pid=1-s2.0-S0893608098001166-main.pdf)]中提出的带**动量（Momentum）**的梯度下降，来使下降的过程变得更为平缓。
 
@@ -78,7 +78,7 @@ $$v_1 = 0.9v_0 + 0.1\theta_1$$ $$\begin{aligned} v_2 & = 0.9v_1 + 0.1 \theta_2 \
 
 使用带动量的梯度下降，梯度下降的过程将变成下图中红色的曲线所示：
 
-![Momentum](https://ws1.sinaimg.cn/large/82e16446ly1g23n7mjfiej20me050gls.jpg)
+![Momentum](https://i.loli.net/2019/05/05/5cce9e57ee134.jpg)
 
 引入动量法后，更新参数时用到梯度值将是前面几次的梯度值进行EWMA后的值，这样能有效平滑下降过程，从而提高收敛速度。
 
@@ -117,7 +117,7 @@ $$dW_t' = \sqrt{\frac{\Delta dW_{t-1} + \epsilon}{s_{dW_t}+\epsilon}} dW_t$$ $$ 
 
 下图是上面所述的几种算法在某个目标函数上的实际表现：
 
-![算法对比](https://ws1.sinaimg.cn/large/82e16446ly1g24i0q2lzpg20h80dc4n1.gif)
+![算法对比](https://i.loli.net/2019/05/05/5cce9e8b14391.gif)
 
 ***
 #### 相关程序

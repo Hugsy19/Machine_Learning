@@ -1,6 +1,6 @@
 下图是基于相同的训练样本得到的几个不同的模型：
 
-![分类问题](https://ws1.sinaimg.cn/large/82e16446ly1fk3xje7ndkj20pt09zq44.jpg)
+![分类问题](https://i.loli.net/2019/05/05/5cce9ea0ddbe4.jpg)
 
 可以看出，其中中间所示的决策界限最为理想，而另外两个模型中出现的问题在机器学习中分别称为：
 * **欠拟合（underfitting）**：模型的表现还不够好，与实际相比存在较大的**偏差（bias）**，如上面的左图
@@ -9,7 +9,7 @@
 训练出来的模型存在欠拟合问题，常常是因为模型还训练得不够好，可以尝试使用更复杂的模型、采用更好优化算法等方法来解决。出现过拟合问题，则往往是由于训练出来得模型过于复杂，导其泛化能力不够强，该问题比欠拟合要难解决得多，当前常用**正则化（regularization）**、**Dropout**、增加训练样本等方法来预防模型出现过拟合问题。
 
 ### 正则化
-![过拟合](https://ws1.sinaimg.cn/large/82e16446ly1g1dxy8qp7gj20pj08qq4o.jpg)
+![过拟合](https://i.loli.net/2019/05/05/5cce9eae4a525.jpg)
 
 上面的右图所示的回归模型明显存在过拟合，要解决该问题，最简单的做法就是想办法使模型中的参数$\theta_3$、$\theta_4$尽可能地接近于$0$，而使其近似地等于左图中最为理想的模型。
 
@@ -47,7 +47,7 @@
 
 ### Dropout
 2012年，将深度学习应用在计算机视觉领域的开山之作[[ImageNet Classification with Deep Convolutional](http://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf)]中提出了神经网络中另外一种用于预防过拟合的算法——Dropout。正如其名，所谓的Dropout，就是使神经网络中的部分神经元失活，以对整个模型进行简化，如下图所示：
-![Dropout](https://ws1.sinaimg.cn/large/82e16446ly1g215n5oj7ij20wk08a41p.jpg)
+![Dropout](https://i.loli.net/2019/05/05/5cce9ebb348fa.jpg)
 
 具体实现Dropout，传统也就上述论文中的做法，是在训练阶段对网络中的各神经元都设置一个保留概率$\text{keep_prob}$，则各神经元将以$\text{keep_prob}$的概率保留下来，而以$1 - \text{keep_prob}$的概率失活。在测试阶段则不执行Dropout，但是训练过程中失活的神经元此时输出的激活需要乘上$\text{keep_prob}$。
 
@@ -75,13 +75,13 @@ z4 = np.dot(w4, a3) + b4
 
 增加训练样本，也能在一定程度上预防过拟合问题的出现，但收集一些额外的样本有时也不是一件易事。这种情况下，使用现有的样本进行**数据扩充（Data Augmentation）**也不失为一种可行的办法。
 
-![数据扩增法](https://ws1.sinaimg.cn/large/82e16446ly1g215uao0i9j20t7068te4.jpg)
+![数据扩增法](https://i.loli.net/2019/05/05/5cce9ed1d5b5d.jpg)
 
 如上图所示，数据扩充就是对已有的数据做一些简单的变换，例如对一张图片进行翻转、放大、随机裁剪、色彩转换等操作，以此就可以拥有更多的训练样本。
 
 另外，某些情况下还可以用**早停止法（Early Stopping）**来预防过拟合:
 
-![早停止法](https://ws1.sinaimg.cn/large/82e16446ly1g21a0a8sz1j20jv08vdgr.jpg)
+![早停止法](https://i.loli.net/2019/05/05/5cce9edb82100.jpg)
 
 训练出一个模型后，将其在训练集和验证集下分别进行梯度下降时成本变化曲线绘制在一起，从而找出两者开始出现较大偏差的一个时间点。如果有把握认为该时间点下训练出来的模型已经足够好，则可以在时间点下便停止学习。
 
