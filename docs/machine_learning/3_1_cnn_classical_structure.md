@@ -18,9 +18,9 @@ AlexNet是Krizhevsky等人2012年在论文[[ImageNet classification with deep co
 
 AlexNet卷积网络和LeNet-5有些类似，但是比后者大得多，大约有6千万个参数。
 
-### VGG-16
+### VGG16
 
-VGG-16是Simonyan和Zisserman 2015年在论文[[Very deep convolutional networks for large-scale image recognition]](https://arxiv.org/pdf/1409.1556.pdf)中提出的卷积网络。其结构如下图：
+VGG16是Simonyan和Zisserman 2015年在论文[[Very deep convolutional networks for large-scale image recognition]](https://arxiv.org/pdf/1409.1556.pdf)中提出的卷积网络。其结构如下图：
 
 ![VGG-16](https://i.loli.net/2019/05/05/5cce9b0f5a141.jpg)
 
@@ -90,6 +90,33 @@ Inception模型后续有人提出了V2、V3、V4的改进，以及引入残差�
 
 ![Inception](https://i.loli.net/2019/05/05/5cce9c191f60b.jpg)
 
+### MobileNet
+
+MobileNet是论文[MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications](https://arxiv.org/abs/1704.04861)出提取的，针对边缘设备而设计的CNN。它基于深度可分离卷积（depthwise separable convolution）而构建，该卷积是一类factorized卷积，它将一个完整的卷积运算分为两步——Depthwise Convolution和Pointwise Convolution。
+
+常规的卷积过程为：
+![常规卷积](https://i.loli.net/2019/05/11/5cd69d7809e09.png)
+
+其中包含$4\times3\times3\times3=108$个参数。而进行DSC时，DC的过程是在二维平面上用三个卷积核为对各通道分别卷积：
+![Depthwise Convolution](https://i.loli.net/2019/05/11/5cd69e00b7ffa.png)
+
+之后PC的过程则用多个$1\times1$大小的卷积核进行卷积：
+![Pointwise Convolution](https://i.loli.net/2019/05/11/5cd69edcda7c7.png)
+
+这样总共包含$3\times3\times3 + 1\times1\times3\times4 = 39$个参数，大大缩减参数数量。
+
+MobileNet v1的整个架构如下图所示：
+![MobileNet v1](https://i.loli.net/2019/05/11/5cd6a4fe9caba.png)
+
+除了最后的全连接层外，每一层后面都进行批标准化后使用ReLU激活：
+![结构对比](https://i.loli.net/2019/05/11/5cd6a5d61c7ad.png)
+
+其中下采样通过增加卷积的步幅来实现，通过后面的平均池化将特征图的空间分辨率变为$1$进而输入后面的全连接层。DC、PC各算一层，则整个MobileNet共包含$28$层。
+
+模型中将大部分计算复杂度都放到了$1\times1$卷积中，它可以通过高度优化的通用矩阵乘法（GEMM）功能来实现。由于模型较小，训练期间没有使用太多预防过拟合的措施
+
+为适应特定应用场景，引入了称为width multiplier的超参数$\alpha$和Resolution Multiplier的超参数$\rho$，它们的值在$(0, 1]$之间选取，前者的作用是给每层均匀进行减负，把某一层中包含$M$个通道的输入变成$\alpha M$，$N$个通道的输入变成$\alpha N$，以此重新定义一个计算量更小的模型，不过该模型需要重新训练；后者的作用是设置输入的分辨率，以此减少计算复杂度。
+
 ***
 #### 相关程序
 
@@ -101,6 +128,8 @@ Inception模型后续有人提出了V2、V3、V4的改进，以及引入残差�
 5. [残差resnet网络原理详解-csdn](http://blog.csdn.net/mao_feng/article/details/52734438)
 6. [关于CNN中1×1卷积核和Network in Network的理解-csdn](http://blog.csdn.net/haolexiao/article/details/77073258)
 7. [GoogLeNet 之 Inception(V1-V4)-csdn](http://blog.csdn.net/diamonjoy_zone/article/details/70576775)
+8. [卷积神经网络中的Separable Convolution](https://yinguobing.com/separable-convolution/#fn2)
 
 #### 更新历史
 * 2019.04.21 完成初稿
+* 2019.05.11 加入MobileNet
